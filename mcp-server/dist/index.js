@@ -11,7 +11,44 @@ import {
 // src/bridge.ts
 import { WebSocketServer, WebSocket } from "ws";
 import { randomUUID } from "crypto";
+import { writeFileSync, readFileSync, unlinkSync, existsSync } from "fs";
+import { tmpdir } from "os";
+import { join } from "path";
 var REQUEST_TIMEOUT_MS = 3e4;
+var PID_FILE = join(tmpdir(), "foundry-mcp-bridge.pid");
+function killStalePid() {
+  if (!existsSync(PID_FILE)) return;
+  try {
+    const stalePid = parseInt(readFileSync(PID_FILE, "utf8").trim(), 10);
+    if (stalePid && stalePid !== process.pid) {
+      try {
+        process.kill(stalePid, "SIGTERM");
+        console.error(`[bridge] Killed stale instance (PID ${stalePid})`);
+      } catch {
+      }
+    }
+  } catch {
+  }
+  try {
+    unlinkSync(PID_FILE);
+  } catch {
+  }
+}
+function writePid() {
+  try {
+    writeFileSync(PID_FILE, String(process.pid), "utf8");
+  } catch {
+  }
+}
+function cleanupPid() {
+  try {
+    if (existsSync(PID_FILE)) {
+      const pid = parseInt(readFileSync(PID_FILE, "utf8").trim(), 10);
+      if (pid === process.pid) unlinkSync(PID_FILE);
+    }
+  } catch {
+  }
+}
 var FoundryBridge = class {
   wss = null;
   client = null;
@@ -19,7 +56,20 @@ var FoundryBridge = class {
   port;
   constructor(port) {
     this.port = port;
-    this.startServer();
+    killStalePid();
+    setTimeout(() => {
+      writePid();
+      this.startServer();
+    }, 500);
+    process.on("exit", cleanupPid);
+    process.on("SIGTERM", () => {
+      cleanupPid();
+      process.exit(0);
+    });
+    process.on("SIGINT", () => {
+      cleanupPid();
+      process.exit(0);
+    });
   }
   startServer() {
     const wss = new WebSocketServer({ port: this.port });
@@ -49,7 +99,7 @@ var FoundryBridge = class {
     wss.on("error", (err) => {
       if (err.code === "EADDRINUSE") {
         console.error(
-          `[bridge] Port ${this.port} is in use \u2014 another instance may still be shutting down. Retrying in 5s...`
+          `[bridge] Port ${this.port} still in use \u2014 retrying in 5s...`
         );
         wss.close();
         this.wss = null;
@@ -95,7 +145,8 @@ var FoundryBridge = class {
     }
   }
   close() {
-    this.wss.close();
+    cleanupPid();
+    this.wss?.close();
   }
 };
 
