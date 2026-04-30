@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:foundryvtt.com)",
+      "WebFetch(domain:foundryvtt.wiki)",
+      "WebSearch",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(claude mcp *)",
+      "Bash(findstr \":4000\")",
+      "Bash(node \"D:/FoundryVTT MCP Bridge Module/mcp-server/dist/index.js\")",
+      "Bash(findstr \":4000\\\\|:4001\")",
+      "Bash(node mcp-server/dist/index.js)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \"LISTENING\")",
+      "PowerShell(Stop-Process -Id 40616 -Force)",
+      "Read(//c/Users/Smogg/AppData/Roaming/Claude/logs/**)",
+      "Read(//c/Users/Smogg/AppData/Roaming/Claude/**)",
+      "PowerShell(Get-NetTCPConnection -LocalPort 4000 -State Listen | Select-Object -ExpandProperty OwningProcess | ForEach-Object { Stop-Process -Id $_ -Force; Write-Host \"Killed PID $_\" })",
+      "Bash(findstr \":4000 \")",
+      "mcp__foundry__world-info"
+    ]
+  }
+}

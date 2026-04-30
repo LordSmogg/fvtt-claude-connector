@@ -1,0 +1,23 @@
+{
+  "FMCPB": {
+    "Settings": {
+      "BridgePort": {
+        "Name": "Bridge Port",
+        "Hint": "The port the MCP server is listening on. Must match BRIDGE_PORT in your MCP server configuration."
+      },
+      "BridgeHost": {
+        "Name": "Bridge Host",
+        "Hint": "The hostname where the MCP server is running. Use 'localhost' for local installations."
+      }
+    },
+    "Status": {
+      "Connected": "MCP Bridge: Connected",
+      "Disconnected": "MCP Bridge: Disconnected",
+      "Connecting": "MCP Bridge: Connecting..."
+    },
+    "Errors": {
+      "GMOnly": "The Foundry MCP Bridge module only operates for GM users.",
+      "ConnectionFailed": "MCP Bridge: Failed to connect to server at {url}. Is the MCP server running?"
+    }
+  }
+}

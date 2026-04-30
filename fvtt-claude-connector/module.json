@@ -1,0 +1,27 @@
+{
+  "id": "fvtt-claude-connector",
+  "title": "FVTT Claude Connector",
+  "description": "Connects Foundry VTT to Claude Code via the Model Context Protocol, enabling AI-assisted world building and game management.",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "fvtt-claude-connector contributors"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "esmodules": ["dist/main.js"],
+  "styles": [],
+  "socket": false,
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "manifest": "",
+  "download": ""
+}

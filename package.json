@@ -1,0 +1,13 @@
+{
+  "name": "foundry-mcp-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "mcp-server",
+    "fvtt-claude-connector"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "dev": "npm run dev --workspaces --if-present"
+  }
+}

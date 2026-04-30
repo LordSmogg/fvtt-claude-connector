@@ -1,0 +1,16 @@
+{
+  "name": "foundry-mcp-bridge-module",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npx esbuild src/main.ts --bundle --platform=browser --target=es2022 --outfile=dist/main.js --format=esm",
+    "dev": "npx esbuild src/main.ts --bundle --platform=browser --target=es2022 --outfile=dist/main.js --format=esm --watch",
+    "typecheck": "npx tsc --noEmit"
+  },
+  "devDependencies": {
+    "@league-of-foundry-developers/foundry-vtt-types": "^13.0.0-alpha.2",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.0"
+  }
+}
