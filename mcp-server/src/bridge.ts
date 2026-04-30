@@ -1,8 +1,47 @@
 import { WebSocketServer, WebSocket } from "ws";
 import { randomUUID } from "crypto";
+import { writeFileSync, readFileSync, unlinkSync, existsSync } from "fs";
+import { tmpdir } from "os";
+import { join } from "path";
 import type { BridgeRequest, BridgeResponse, PendingRequest } from "./types.js";
 
 const REQUEST_TIMEOUT_MS = 30_000;
+const PID_FILE = join(tmpdir(), "foundry-mcp-bridge.pid");
+
+function killStalePid(): void {
+  if (!existsSync(PID_FILE)) return;
+  try {
+    const stalePid = parseInt(readFileSync(PID_FILE, "utf8").trim(), 10);
+    if (stalePid && stalePid !== process.pid) {
+      try {
+        process.kill(stalePid, "SIGTERM");
+        console.error(`[bridge] Killed stale instance (PID ${stalePid})`);
+      } catch {
+        // Process already gone — that's fine
+      }
+    }
+  } catch {
+    // PID file unreadable — ignore
+  }
+  try { unlinkSync(PID_FILE); } catch { /* ignore */ }
+}
+
+function writePid(): void {
+  try {
+    writeFileSync(PID_FILE, String(process.pid), "utf8");
+  } catch {
+    // Non-fatal if we can't write the PID file
+  }
+}
+
+function cleanupPid(): void {
+  try {
+    if (existsSync(PID_FILE)) {
+      const pid = parseInt(readFileSync(PID_FILE, "utf8").trim(), 10);
+      if (pid === process.pid) unlinkSync(PID_FILE);
+    }
+  } catch { /* ignore */ }
+}
 
 export class FoundryBridge {
   private wss: WebSocketServer | null = null;
@@ -12,7 +51,17 @@ export class FoundryBridge {
 
   constructor(port: number) {
     this.port = port;
-    this.startServer();
+    killStalePid();
+    // Brief pause to let the killed process release the port
+    setTimeout(() => {
+      writePid();
+      this.startServer();
+    }, 500);
+
+    // Clean up PID file on exit
+    process.on("exit", cleanupPid);
+    process.on("SIGTERM", () => { cleanupPid(); process.exit(0); });
+    process.on("SIGINT", () => { cleanupPid(); process.exit(0); });
   }
 
   private startServer() {
@@ -49,7 +98,7 @@ export class FoundryBridge {
     wss.on("error", (err: NodeJS.ErrnoException) => {
       if (err.code === "EADDRINUSE") {
         console.error(
-          `[bridge] Port ${this.port} is in use — another instance may still be shutting down. Retrying in 5s...`
+          `[bridge] Port ${this.port} still in use — retrying in 5s...`
         );
         wss.close();
         this.wss = null;
@@ -105,6 +154,7 @@ export class FoundryBridge {
   }
 
   close() {
-    this.wss.close();
+    cleanupPid();
+    this.wss?.close();
   }
 }

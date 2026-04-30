@@ -1,4 +1,4 @@
-{
+﻿{
   "id": "fvtt-claude-connector",
   "title": "FVTT Claude Connector",
   "description": "Connects Foundry VTT to Claude Code via the Model Context Protocol, enabling AI-assisted world building and game management.",
