@@ -1,23 +1,28 @@
 {
-  "name": "foundry-mcp-bridge-server",
+  "name": "foundry-mcp-bridge",
   "version": "0.1.0",
-  "private": true,
+  "description": "MCP server that connects Claude AI to a live Foundry VTT world via the Model Context Protocol.",
+  "keywords": ["foundry-vtt", "mcp", "claude", "ai", "ttrpg"],
+  "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
+  "bin": {
+    "foundry-mcp-bridge": "dist/index.js"
+  },
+  "files": [
+    "dist/index.js"
+  ],
   "scripts": {
-    "build": "npx esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js --format=esm --packages=external",
-    "build:bundle": "npx esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/server.bundle.mjs --format=esm",
+    "build": "npx esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js --format=esm --banner:js=\"#!/usr/bin/env node\"",
     "dev": "npx tsx watch src/index.ts",
     "start": "node dist/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.10.2",
-    "express": "^4.21.0",
     "ws": "^8.18.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
     "@types/node": "^22.0.0",
     "@types/ws": "^8.5.14",
     "esbuild": "^0.25.0",

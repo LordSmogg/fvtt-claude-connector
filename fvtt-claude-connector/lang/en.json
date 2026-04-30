@@ -3,11 +3,16 @@
     "Settings": {
       "BridgePort": {
         "Name": "Bridge Port",
-        "Hint": "The port the MCP server is listening on. Must match BRIDGE_PORT in your MCP server configuration."
+        "Hint": "The port the MCP server listens on. Default is 4000."
       },
       "BridgeHost": {
         "Name": "Bridge Host",
         "Hint": "The hostname where the MCP server is running. Use 'localhost' for local installations."
+      },
+      "SetupGuide": {
+        "Name": "Setup Guide",
+        "Label": "Show Setup Guide",
+        "Hint": "Step-by-step instructions for connecting Claude to this Foundry world."
       }
     },
     "Status": {

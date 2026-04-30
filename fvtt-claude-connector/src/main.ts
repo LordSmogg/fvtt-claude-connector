@@ -10,6 +10,7 @@ import { registerChatHandlers } from "./handlers/chat.js";
 import { registerFolderHandlers } from "./handlers/folders.js";
 import { registerWorldHandlers } from "./handlers/world.js";
 import { registerSystemHandlers } from "./handlers/system.js";
+import { SetupGuideApp } from "./setup-guide.js";
 
 const MODULE_ID = "fvtt-claude-connector";
 
@@ -32,6 +33,22 @@ Hooks.once("init", () => {
     config: true,
     type: Number,
     default: 4000,
+  });
+
+  game.settings!.register(MODULE_ID, "setupShown", {
+    scope: "world",
+    config: false,
+    type: Boolean,
+    default: false,
+  });
+
+  game.settings!.registerMenu(MODULE_ID, "setupGuide", {
+    name: "FMCPB.Settings.SetupGuide.Name",
+    label: "FMCPB.Settings.SetupGuide.Label",
+    hint: "FMCPB.Settings.SetupGuide.Hint",
+    icon: "fas fa-book",
+    type: SetupGuideApp,
+    restricted: true,
   });
 });
 
@@ -59,4 +76,12 @@ Hooks.once("ready", () => {
   registerSystemHandlers(bridgeClient);
 
   bridgeClient.connect();
+
+  // Show setup guide automatically on first install
+  const setupShown = game.settings!.get(MODULE_ID, "setupShown") as boolean;
+  if (!setupShown) {
+    game.settings!.set(MODULE_ID, "setupShown", true);
+    // Small delay so Foundry UI is fully ready
+    setTimeout(() => new SetupGuideApp().render(true), 1500);
+  }
 });
