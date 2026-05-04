@@ -21,7 +21,11 @@
       "Read(//c/Users/Smogg/AppData/Roaming/Claude/**)",
       "PowerShell(Get-NetTCPConnection -LocalPort 4000 -State Listen | Select-Object -ExpandProperty OwningProcess | ForEach-Object { Stop-Process -Id $_ -Force; Write-Host \"Killed PID $_\" })",
       "Bash(findstr \":4000 \")",
-      "mcp__foundry__world-info"
+      "mcp__foundry__world-info",
+      "mcp__foundry__system-info",
+      "mcp__foundry__item-list",
+      "mcp__foundry__item-get",
+      "mcp__foundry__item-update"
     ]
   }
 }

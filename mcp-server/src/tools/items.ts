@@ -27,13 +27,13 @@ export const itemTools: Tool[] = [
   },
   {
     name: "item-create",
-    description: "Create a new world-level item.",
+    description: "Create a new world-level item. Always call system-info first to get valid item types and field names for the active game system. For Shadowrun 6e 'mod' items: use system.availDef (string, e.g. '3(I)') for availability, system.price (number, e.g. 250) for cost, and system.page (number) for book page reference. Do NOT duplicate availability or price inside the description HTML — use the dedicated fields instead.",
     inputSchema: {
       type: "object",
       properties: {
         name: { type: "string" },
-        type: { type: "string", description: "Item type for the active game system (e.g. 'weapon', 'spell')" },
-        system: { type: "object", description: "System-specific item data" },
+        type: { type: "string", description: "Item type for the active game system (e.g. 'mod', 'gear', 'spell')" },
+        system: { type: "object", description: "System-specific item data. Use system-info to find valid fields." },
         img: { type: "string" },
         folder: { type: "string" },
       },
@@ -80,7 +80,7 @@ export const itemTools: Tool[] = [
   {
     name: "actor-item-add",
     description:
-      "Add an item to an actor. Either provide a worldItemId to copy a world item, or provide name+type+system to create a new embedded item directly.",
+      "Add an item to an actor. Either provide a worldItemId to copy a world item, or provide name+type+system to create a new embedded item directly. For Shadowrun 6e 'mod' items: use system.availDef (string), system.price (number), system.page (number) — do NOT put availability or price in the description HTML.",
     inputSchema: {
       type: "object",
       properties: {
