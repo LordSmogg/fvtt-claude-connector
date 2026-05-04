@@ -55,6 +55,7 @@ export const sceneTools: Tool[] = [
         darkness: { type: "number", description: "Darkness level 0-1" },
         tokenVision: { type: "boolean" },
         fogExploration: { type: "boolean" },
+        folder: { type: "string", description: "Move to a different folder by ID (use folder-list to find IDs)" },
       },
       required: ["id"],
     },

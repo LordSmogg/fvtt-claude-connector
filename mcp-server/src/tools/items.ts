@@ -50,6 +50,7 @@ export const itemTools: Tool[] = [
         name: { type: "string" },
         system: { type: "object" },
         img: { type: "string" },
+        folder: { type: "string", description: "Move to a different folder by ID (use folder-list to find IDs)" },
       },
       required: ["id"],
     },

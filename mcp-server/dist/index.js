@@ -201,6 +201,7 @@ var actorTools = [
         name: { type: "string" },
         system: { type: "object", description: "System-specific data to update (supports dot-notation keys)" },
         img: { type: "string" },
+        folder: { type: "string", description: "Move to a different folder by ID (use folder-list to find IDs)" },
         prototypeToken: { type: "object" }
       },
       required: ["id"]
@@ -271,7 +272,8 @@ var itemTools = [
         id: { type: "string" },
         name: { type: "string" },
         system: { type: "object" },
-        img: { type: "string" }
+        img: { type: "string" },
+        folder: { type: "string", description: "Move to a different folder by ID (use folder-list to find IDs)" }
       },
       required: ["id"]
     }
@@ -401,7 +403,8 @@ var sceneTools = [
         background: { type: "object" },
         darkness: { type: "number", description: "Darkness level 0-1" },
         tokenVision: { type: "boolean" },
-        fogExploration: { type: "boolean" }
+        fogExploration: { type: "boolean" },
+        folder: { type: "string", description: "Move to a different folder by ID (use folder-list to find IDs)" }
       },
       required: ["id"]
     }
