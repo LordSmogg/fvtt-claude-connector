@@ -39,4 +39,45 @@ export function registerFolderHandlers(client: FoundryBridgeClient) {
       parent: folder.folder?.id ?? null,
     };
   });
+
+  client.register("folder-update", async (params) => {
+    const { id, name, parent, color } = params as {
+      id: string;
+      name?: string;
+      parent?: string | null;
+      color?: string;
+    };
+
+    const folder = game.folders!.get(id);
+    if (!folder) throw new Error(`Folder not found: ${id}`);
+
+    const updates: Record<string, unknown> = {};
+    if (name !== undefined) updates.name = name;
+    if (parent !== undefined) updates.folder = parent ?? null;
+    if (color !== undefined) updates.color = color;
+
+    await folder.update(updates);
+
+    return {
+      id: folder.id,
+      name: folder.name,
+      type: folder.type,
+      parent: folder.folder?.id ?? null,
+      color: folder.color,
+    };
+  });
+
+  client.register("folder-delete", async (params) => {
+    const { id, deleteContents = false } = params as {
+      id: string;
+      deleteContents?: boolean;
+    };
+
+    const folder = game.folders!.get(id);
+    if (!folder) throw new Error(`Folder not found: ${id}`);
+
+    await folder.delete({ deleteSubfolders: deleteContents, deleteContents });
+
+    return { deleted: id };
+  });
 }

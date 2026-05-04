@@ -854,6 +854,32 @@ var folderTools = [
       },
       required: ["name", "type"]
     }
+  },
+  {
+    name: "folder-update",
+    description: "Update an existing folder \u2014 rename it, move it to a different parent, or change its color.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string", description: "Folder ID" },
+        name: { type: "string", description: "New name" },
+        parent: { type: "string", description: "New parent folder ID (use null to move to root)" },
+        color: { type: "string", description: "Hex color (e.g. '#ff0000')" }
+      },
+      required: ["id"]
+    }
+  },
+  {
+    name: "folder-delete",
+    description: "Delete a folder. By default contents are moved to root; set deleteContents to true to delete everything inside as well.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string", description: "Folder ID" },
+        deleteContents: { type: "boolean", description: "If true, also deletes all documents inside the folder. Defaults to false (contents moved to root)." }
+      },
+      required: ["id"]
+    }
   }
 ];
 async function handleFolderTool(name, args, bridge) {

@@ -688,6 +688,30 @@ function registerFolderHandlers(client) {
       parent: folder.folder?.id ?? null
     };
   });
+  client.register("folder-update", async (params) => {
+    const { id, name, parent, color } = params;
+    const folder = game.folders.get(id);
+    if (!folder) throw new Error(`Folder not found: ${id}`);
+    const updates = {};
+    if (name !== void 0) updates.name = name;
+    if (parent !== void 0) updates.folder = parent ?? null;
+    if (color !== void 0) updates.color = color;
+    await folder.update(updates);
+    return {
+      id: folder.id,
+      name: folder.name,
+      type: folder.type,
+      parent: folder.folder?.id ?? null,
+      color: folder.color
+    };
+  });
+  client.register("folder-delete", async (params) => {
+    const { id, deleteContents = false } = params;
+    const folder = game.folders.get(id);
+    if (!folder) throw new Error(`Folder not found: ${id}`);
+    await folder.delete({ deleteSubfolders: deleteContents, deleteContents });
+    return { deleted: id };
+  });
 }
 
 // src/handlers/world.ts
