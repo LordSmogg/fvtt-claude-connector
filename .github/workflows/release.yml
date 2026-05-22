@@ -35,11 +35,6 @@ jobs:
           zip -r ../release/fvtt-claude-connector.zip dist/ lang/ module.json
           cp module.json ../release/module.json
 
-      - name: Publish MCP server to npm
-        run: npm publish --workspace=mcp-server
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -47,3 +42,9 @@ jobs:
             release/fvtt-claude-connector.zip
             release/module.json
           generate_release_notes: true
+
+      - name: Publish MCP server to npm
+        run: npm publish --workspace=mcp-server
+        continue-on-error: true
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
