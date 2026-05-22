@@ -27,13 +27,13 @@ export const itemTools: Tool[] = [
   },
   {
     name: "item-create",
-    description: "Create a new world-level item.",
+    description: "Create a new world-level item. Always call system-info first to get valid item types and field names for the active game system. Use the dedicated system fields for structured data (availability, price, page, etc.) rather than duplicating them in the description HTML.",
     inputSchema: {
       type: "object",
       properties: {
         name: { type: "string" },
-        type: { type: "string", description: "Item type for the active game system (e.g. 'weapon', 'spell')" },
-        system: { type: "object", description: "System-specific item data" },
+        type: { type: "string", description: "Item type for the active game system (e.g. 'mod', 'gear', 'spell')" },
+        system: { type: "object", description: "System-specific item data. Use system-info to find valid fields." },
         img: { type: "string" },
         folder: { type: "string" },
       },
@@ -50,6 +50,7 @@ export const itemTools: Tool[] = [
         name: { type: "string" },
         system: { type: "object" },
         img: { type: "string" },
+        folder: { type: "string", description: "Move to a different folder by ID (use folder-list to find IDs)" },
       },
       required: ["id"],
     },
@@ -80,7 +81,7 @@ export const itemTools: Tool[] = [
   {
     name: "actor-item-add",
     description:
-      "Add an item to an actor. Either provide a worldItemId to copy a world item, or provide name+type+system to create a new embedded item directly.",
+      "Add an item to an actor. Either provide a worldItemId to copy a world item, or provide name+type+system to create a new embedded item directly. Use dedicated system fields for structured data rather than duplicating them in description HTML.",
     inputSchema: {
       type: "object",
       properties: {

@@ -201,6 +201,7 @@ var actorTools = [
         name: { type: "string" },
         system: { type: "object", description: "System-specific data to update (supports dot-notation keys)" },
         img: { type: "string" },
+        folder: { type: "string", description: "Move to a different folder by ID (use folder-list to find IDs)" },
         prototypeToken: { type: "object" }
       },
       required: ["id"]
@@ -249,13 +250,13 @@ var itemTools = [
   },
   {
     name: "item-create",
-    description: "Create a new world-level item.",
+    description: "Create a new world-level item. Always call system-info first to get valid item types and field names for the active game system. Use the dedicated system fields for structured data (availability, price, page, etc.) rather than duplicating them in the description HTML.",
     inputSchema: {
       type: "object",
       properties: {
         name: { type: "string" },
-        type: { type: "string", description: "Item type for the active game system (e.g. 'weapon', 'spell')" },
-        system: { type: "object", description: "System-specific item data" },
+        type: { type: "string", description: "Item type for the active game system (e.g. 'mod', 'gear', 'spell')" },
+        system: { type: "object", description: "System-specific item data. Use system-info to find valid fields." },
         img: { type: "string" },
         folder: { type: "string" }
       },
@@ -271,7 +272,8 @@ var itemTools = [
         id: { type: "string" },
         name: { type: "string" },
         system: { type: "object" },
-        img: { type: "string" }
+        img: { type: "string" },
+        folder: { type: "string", description: "Move to a different folder by ID (use folder-list to find IDs)" }
       },
       required: ["id"]
     }
@@ -301,7 +303,7 @@ var itemTools = [
   },
   {
     name: "actor-item-add",
-    description: "Add an item to an actor. Either provide a worldItemId to copy a world item, or provide name+type+system to create a new embedded item directly.",
+    description: "Add an item to an actor. Either provide a worldItemId to copy a world item, or provide name+type+system to create a new embedded item directly. Use dedicated system fields for structured data rather than duplicating them in description HTML.",
     inputSchema: {
       type: "object",
       properties: {
@@ -401,7 +403,8 @@ var sceneTools = [
         background: { type: "object" },
         darkness: { type: "number", description: "Darkness level 0-1" },
         tokenVision: { type: "boolean" },
-        fogExploration: { type: "boolean" }
+        fogExploration: { type: "boolean" },
+        folder: { type: "string", description: "Move to a different folder by ID (use folder-list to find IDs)" }
       },
       required: ["id"]
     }
@@ -850,6 +853,32 @@ var folderTools = [
         color: { type: "string", description: "Hex color for the folder (e.g. '#ff0000')" }
       },
       required: ["name", "type"]
+    }
+  },
+  {
+    name: "folder-update",
+    description: "Update an existing folder \u2014 rename it, move it to a different parent, or change its color.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string", description: "Folder ID" },
+        name: { type: "string", description: "New name" },
+        parent: { type: "string", description: "New parent folder ID (use null to move to root)" },
+        color: { type: "string", description: "Hex color (e.g. '#ff0000')" }
+      },
+      required: ["id"]
+    }
+  },
+  {
+    name: "folder-delete",
+    description: "Delete a folder. By default contents are moved to root; set deleteContents to true to delete everything inside as well.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string", description: "Folder ID" },
+        deleteContents: { type: "boolean", description: "If true, also deletes all documents inside the folder. Defaults to false (contents moved to root)." }
+      },
+      required: ["id"]
     }
   }
 ];

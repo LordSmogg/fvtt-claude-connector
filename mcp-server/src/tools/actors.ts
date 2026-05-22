@@ -51,6 +51,7 @@ export const actorTools: Tool[] = [
         name: { type: "string" },
         system: { type: "object", description: "System-specific data to update (supports dot-notation keys)" },
         img: { type: "string" },
+        folder: { type: "string", description: "Move to a different folder by ID (use folder-list to find IDs)" },
         prototypeToken: { type: "object" },
       },
       required: ["id"],
