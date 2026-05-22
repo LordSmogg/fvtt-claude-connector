@@ -9,7 +9,7 @@ Claude Code  ──(MCP/stdio)──▶  MCP Server (Node.js)  ──(WebSocket)
 ```
 
 - The **MCP server** (`foundry-mcp-bridge` on npm) runs on your machine and speaks to Claude Code over stdio.
-- The **Foundry module** runs inside Foundry's browser context (GM only) and connects back to the MCP server over WebSocket.
+- The **Foundry module** runs inside Foundry (desktop app or browser, GM only) and connects back to the MCP server over WebSocket.
 - Claude Code can then call tools to create, read, update, and delete any Foundry document type.
 
 ---
