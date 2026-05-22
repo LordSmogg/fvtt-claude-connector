@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npx esbuild src/main.ts --bundle --platform=browser --target=es2022 --outfile=dist/main.js --format=esm && node -e \"require('fs').copyFileSync('dist/main.js','D:/FoundryVTT/Data/modules/fvtt-claude-connector/dist/main.js');console.log('[build] Copied to Foundry modules')\"",
+    "build": "npx esbuild src/main.ts --bundle --platform=browser --target=es2022 --outfile=dist/main.js --format=esm && node -e \"const fs=require('fs'),dest='D:/FoundryVTT/Data/modules/fvtt-claude-connector/dist/main.js';try{fs.copyFileSync('dist/main.js',dest);console.log('[build] Copied to Foundry modules')}catch(e){if(e.code!=='ENOENT')throw e}\"",
     "dev": "npx esbuild src/main.ts --bundle --platform=browser --target=es2022 --outfile=dist/main.js --format=esm --watch",
     "typecheck": "npx tsc --noEmit"
   },
