@@ -1,6 +1,6 @@
 ﻿{
   "name": "foundry-mcp-bridge",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "MCP server that connects Claude AI to a live Foundry VTT world via the Model Context Protocol.",
   "keywords": ["foundry-vtt", "mcp", "claude", "ai", "ttrpg"],
   "license": "MIT",
